@@ -1,0 +1,39 @@
+<Window x:Class="comixpaint.modals.TexturePickerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Textur wählen"
+        Width="440"
+        Height="440"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#FF404040">
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="128"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 ItemsSource="{Binding Textures}"
+                 SelectedItem="{Binding SelectedTexture, Mode=TwoWay}"
+                 DisplayMemberPath="Name"
+                 Background="#FF404040"
+                 Foreground="White"
+                 BorderBrush="Gray"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Vorschau" Foreground="White" TextAlignment="Center" Margin="8,0,0,0"/>
+        <Image Grid.Row="1" Grid.Column="1" Width="128" Height="128" Stretch="None" Margin="8,0,0,0" Source="{Binding Preview}"/>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical" Margin="16,0,0,0">
+            <Button Content="Übernehmen" Width="128" Margin="0,0,0,8" Command="{Binding OkCommand}"/>
+            <Button Content="Abwählen" Width="128" Margin="0,0,0,8" Command="{Binding ClearCommand}"/>
+            <Button Content="Abbrechen" Width="128" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

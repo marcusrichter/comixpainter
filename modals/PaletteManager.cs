@@ -1,64 +1,19 @@
-﻿using comixpaint.controllers;
-using System;
-using System.Windows.Forms;
+using comixpaint.ViewModels;
+using System.Windows;
 
 namespace comixpaint.modals
 {
-    public partial class PaletteManager : Form
+    public partial class PaletteManager : Window
     {
-        public static PaletteManager Instance { get; set; }
-
-        public Panel PanelPallettes => panelPallettes;
-
-        public Label LabelPaletteFileName => labelPaletteFileName;
-
-        public CheckBox CheckBoxDeleteModus => checkBoxDeleteModus;
-
-        public CheckBox CheckBoxRename => checkBoxRename;
-
-        public PaletteManager()
+        public PaletteManager(PaletteManagerViewModel viewModel)
         {
-            Instance = this;
             InitializeComponent();
-        }
-
-        private void PaletteManager_Load(object sender, EventArgs e)
-        {
-            PaletteController.I().FillPaletteManager();
-        }
-
-        private void buttonPallettePush_Click(object sender, EventArgs e)
-        {
-            PaletteController.I().SavePath();
-        }
-
-        private void buttonLoadPalette_Click(object sender, EventArgs e)
-        {
-            PaletteController.I().LoadPath();
-        }
-
-        private void checkBoxDeleteModus_CheckedChanged(object sender, EventArgs e)
-        {
-            if (CheckBoxDeleteModus.Checked)
+            DataContext = viewModel;
+            viewModel.RequestClose += result =>
             {
-                checkBoxRename.Enabled = false;
-            }
-            else
-            {
-                checkBoxRename.Enabled = true;
-            }
-        }
-
-        private void checkBoxRename_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxRename.Checked)
-            {
-                checkBoxDeleteModus.Enabled = false;
-            }
-            else
-            {
-                checkBoxDeleteModus.Enabled = true;
-            }
+                DialogResult = result;
+                Close();
+            };
         }
     }
 }

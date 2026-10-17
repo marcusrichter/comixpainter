@@ -1,13 +1,12 @@
 ﻿
+using mystical.Model;
 using System;
-using System.IO;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace comixpaint.common
 {
     [Serializable]
-    public class ComixpaintSettings : ISerializable
+    public class ComixpaintSettings : AbstractModel
     {
         public string CmxDirectory { get; set; }
         public string PngDirectory { get; set; }
@@ -19,7 +18,7 @@ namespace comixpaint.common
         public static ComixpaintSettings Instance { get; set; }
 
         public ComixpaintSettings()
-        {
+        {            
         }
 
         ~ComixpaintSettings()
@@ -28,23 +27,22 @@ namespace comixpaint.common
         }
 
         public static void Load()
-        {
+        {            
             var configFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/comixpaint.cfg";
-            var formatter = new BinaryFormatter();
-            var s = File.OpenRead(configFilePath);
-#pragma warning disable SYSLIB0011
-            Instance = (ComixpaintSettings)formatter.Deserialize(s);
-            s.Close();
+            if (System.IO.File.Exists(configFilePath))
+            {
+                Instance = LoadObject<ComixpaintSettings>(configFilePath);
+            }
+            else
+            {
+                Instance = new ComixpaintSettings();
+            }            
         }
 
         public static void Save()
         {
             var configFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/comixpaint.cfg";
-            var formatter = new BinaryFormatter();
-            var s = File.Create(configFilePath);
-#pragma warning disable SYSLIB0011
-            formatter.Serialize(s, Instance);
-            s.Close();
+            Instance.SaveToFile(configFilePath);
         }
 
 

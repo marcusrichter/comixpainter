@@ -1,0 +1,38 @@
+<Window x:Class="comixpaint.modals.AiImageGenerationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KI-Bildgenerierung"
+        Width="520"
+        Height="360"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#FF404040">
+    <StackPanel Margin="12">
+        <TextBlock Text="Beschreiben Sie das gewünschte Bild. Die KI wird ein Bild generieren, das als Vorlage verwendet werden kann."
+                   Foreground="LightGray"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,8"/>
+
+        <TextBlock Text="Bildbeschreibung:" Foreground="White" Margin="0,0,0,4"/>
+
+        <TextBox Height="100"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto"
+                 Margin="0,0,0,8"
+                 Text="{Binding Prompt, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Content="Aktuelles Bild als Vorlage nehmen"
+                  Foreground="White"
+                  Margin="0,0,0,8"
+                  IsChecked="{Binding UseCurrentImage, Mode=TwoWay}"
+                  IsEnabled="{Binding IsNotBusy}"/>
+
+        <TextBlock Text="{Binding StatusText}" Foreground="LightGreen" Margin="0,0,0,8"/>
+
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Ok" Width="120" Margin="0,0,8,0" Command="{Binding GenerateCommand}" IsEnabled="{Binding IsNotBusy}"/>
+            <Button Content="Abbrechen" Width="120" Command="{Binding CancelCommand}" IsEnabled="{Binding IsNotBusy}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

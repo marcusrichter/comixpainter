@@ -1,0 +1,166 @@
+<Window x:Class="comixpaint.MainForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:comixpaint"
+        Title="comixpaint"
+        Width="1011"
+        Height="800"
+        Background="#FFA0A0A0">
+    <Window.Resources>
+        <Style x:Key="ToolButtonStyle" TargetType="{x:Type local:ColorButton}">
+            <Setter Property="Background" Value="#FF2B2B2B"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Datei">
+                <MenuItem Header="Neu" Command="{Binding Menu.NewImageCommand}"/>
+                <MenuItem Header="Speichern (png)" Command="{Binding Menu.SavePngCommand}"/>
+                <MenuItem Header="Speichern (cmx)" Command="{Binding Menu.SaveCmxCommand}"/>
+                <MenuItem Header="Speichern (cmx + png)" Command="{Binding Menu.SaveCmxAndPngCommand}"/>
+                <MenuItem Header="Laden (cmx)" Command="{Binding Menu.LoadCmxCommand}"/>
+                <MenuItem Header="Hinzufügen (cmx)" Command="{Binding Menu.AddCmxCommand}"/>
+                <Separator/>
+                <MenuItem Header="Vorlage laden" Command="{Binding Menu.LoadTemplateCommand}"/>
+                <MenuItem Header="Vorlagen entfernen" Command="{Binding Menu.RemoveTemplateCommand}"/>
+                <MenuItem Header="Vorlage transparent" Command="{Binding Menu.TransparentTemplateCommand}"/>
+                <MenuItem Header="Vorlage nicht transparent" Command="{Binding Menu.NotTransparentTemplateCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Bearbeiten">
+                <MenuItem Header="Letztes Shade entfernen" Command="{Binding Menu.LastShadeDeleteCommand}"/>
+                <MenuItem Header="Letztes Shade neu Shaden" Command="{Binding Menu.LastShadeNewShadeCommand}"/>
+                <MenuItem Header="auto schneiden" Command="{Binding Menu.AutoCutCommand}"/>
+                <MenuItem Header="Rückgängig" Command="{Binding Menu.UndoCommand}"/>
+                <MenuItem Header="Grösse ändern" Command="{Binding Menu.ChangeSizeCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Zoom">
+                <MenuItem Header="Zoom 1" Command="{Binding Menu.ZoomCommand}" CommandParameter="1"/>
+                <MenuItem Header="Zoom 2" Command="{Binding Menu.ZoomCommand}" CommandParameter="2"/>
+                <MenuItem Header="Zoom 3" Command="{Binding Menu.ZoomCommand}" CommandParameter="3"/>
+                <MenuItem Header="Zoom 4" Command="{Binding Menu.ZoomCommand}" CommandParameter="4"/>
+                <MenuItem Header="Zoom 6" Command="{Binding Menu.ZoomCommand}" CommandParameter="6"/>
+                <MenuItem Header="Zoom 8" Command="{Binding Menu.ZoomCommand}" CommandParameter="8"/>
+            </MenuItem>
+            <MenuItem Header="Effekte">
+                <MenuItem Header="Spiegeln X Achse" Command="{Binding Menu.MirrorXCommand}"/>
+                <MenuItem Header="Spiegeln Y Achse" Command="{Binding Menu.MirrorYCommand}"/>
+                <MenuItem Header="Rotieren 90 Grad" Command="{Binding Menu.RotateCommand}"/>
+                <MenuItem Header="Skalieren" Command="{Binding Menu.ScaleCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Texturen">
+                <MenuItem Header="LandNoise" Command="{Binding Texture.CreateLandNoiseCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Height="37" Background="#FF2B2B2B">
+            <local:ColorButton Content="Palette" Width="75" Height="23" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Palette.OpenPaletteManagerCommand}"/>
+            <local:ColorButton Content="Hinzufügen" Width="75" Height="23" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Palette.AddColorCommand}"/>
+            <local:ColorButton Content="Hinzufügen (Rand)" Width="110" Height="23" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Palette.AddBorderColorCommand}"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Left" Width="78" Background="#FF2B2B2B">
+            <local:ColorButton x:Name="buttonDrawOval" Width="69" Height="52" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.DrawOvalCommand}"/>
+            <local:ColorButton x:Name="buttonDrawRect" Width="69" Height="52" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.DrawRectCommand}"/>
+            <local:ColorButton x:Name="buttonDrawFree" Width="69" Height="52" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.DrawFreeCommand}"/>
+            <local:ColorButton x:Name="buttonDrawLines" Width="69" Height="52" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.DrawLinesCommand}"/>
+            <local:ColorButton x:Name="buttonDrawFreeLines" Width="69" Height="52" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.DrawFreeLinesCommand}"/>
+            <local:ColorButton x:Name="buttonMove" Width="69" Height="47" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.MoveCommand}"/>
+            <local:ColorButton x:Name="buttonDelete" Width="69" Height="47" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.DeleteCommand}"/>
+            <local:ColorButton x:Name="buttonMoveInFront" Width="69" Height="47" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.MoveInFrontCommand}"/>
+            <local:ColorButton x:Name="buttonMoveInBack" Width="69" Height="47" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.MoveInBackCommand}"/>
+            <local:ColorButton x:Name="buttonCopy" Width="69" Height="52" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.CopyCommand}"/>
+            <local:ColorButton x:Name="buttonRecolor" Content="Recolor" Width="69" Height="35" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.RecolorCommand}"/>
+            <local:ColorButton x:Name="buttonSelectShape" Content="Select" Width="69" Height="35" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.SelectShapeCommand}"/>
+            <local:ColorButton x:Name="buttonPickColor" Content="Pick Color" Width="69" Height="35" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Tools.PickColorCommand}"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Right" Width="157" Background="#FF2B2B2B">
+            <local:ColorButton x:Name="buttonDrawingColor" Text="Zeichenfarbe" Width="150" Height="23" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.PickPaintColorCommand}"/>
+            <local:ColorButton x:Name="buttonBorderColor" Text="Randfarbe" Width="150" Height="23" Margin="3" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.PickBorderColorCommand}"/>
+
+            <ComboBox x:Name="comboBoxLineWidth" Width="150" Height="21" Margin="3" SelectedIndex="{Binding Settings.LineWidthIndex, Mode=TwoWay}">
+                <ComboBoxItem Content="Liniendicke 0"/>
+                <ComboBoxItem Content="Liniendicke 1"/>
+                <ComboBoxItem Content="Liniendicke 2"/>
+                <ComboBoxItem Content="Liniendicke 3"/>
+                <ComboBoxItem Content="Liniendicke 4"/>
+                <ComboBoxItem Content="Liniendicke 5"/>
+            </ComboBox>
+            <ComboBox x:Name="comboBoxColorSteps" Width="150" Height="21" Margin="3" SelectedIndex="{Binding Settings.ShadestepsIndex, Mode=TwoWay}">
+                <ComboBoxItem Content="1 Farbstufe"/>
+                <ComboBoxItem Content="2 Farbstufe"/>
+                <ComboBoxItem Content="3 Farbstufe"/>
+                <ComboBoxItem Content="4 Farbstufe"/>
+                <ComboBoxItem Content="5 Farbstufe"/>
+            </ComboBox>
+
+            <TextBlock Text="Shading Richtung" Foreground="White" FontWeight="Bold" Margin="3,8,3,0"/>
+
+            <Grid Width="150" Height="147" Margin="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <local:ColorButton x:Name="buttonShadingLeftUp" Grid.Row="0" Grid.Column="0" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="topleft"/>
+                <local:ColorButton x:Name="buttonShadingUp" Grid.Row="0" Grid.Column="1" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="top"/>
+                <local:ColorButton x:Name="buttonShadingRightUp" Grid.Row="0" Grid.Column="2" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="topright"/>
+                <local:ColorButton x:Name="buttonShadingLeft" Grid.Row="1" Grid.Column="0" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="left"/>
+                <local:ColorButton x:Name="buttonShadeCenter" Grid.Row="1" Grid.Column="1" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="center"/>
+                <local:ColorButton x:Name="buttonShadingRight" Grid.Row="1" Grid.Column="2" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="right"/>
+                <local:ColorButton x:Name="buttonShadingLeftDown" Grid.Row="2" Grid.Column="0" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="bottomleft"/>
+                <local:ColorButton x:Name="buttonShadingDown" Grid.Row="2" Grid.Column="1" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="bottom"/>
+                <local:ColorButton x:Name="buttonShadingRightDown" Grid.Row="2" Grid.Column="2" Margin="1" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.ShadeCommand}" CommandParameter="bottomright"/>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBox x:Name="textBoxColorDiff" Width="60" Height="20"/>
+                <TextBlock Text="Farbverlauf" Foreground="White" VerticalAlignment="Center" Margin="6,0,0,0"/>
+            </StackPanel>
+
+            <CheckBox x:Name="checkBoxAutocatSave" Content="Autoschneiden speichern" Foreground="White" Margin="3" IsChecked="{Binding Settings.AutoCutSave, Mode=TwoWay}"/>
+
+            <TextBlock Text="Kombinierung" Foreground="White" FontWeight="Bold" Margin="3,8,3,0"/>
+
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <local:ColorButton x:Name="buttonCombinateNone" Width="47" Height="47" Margin="0,0,4,0" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.SetCombinateNoneCommand}"/>
+                <local:ColorButton x:Name="buttonCombinatePlus" Width="47" Height="47" Margin="0,0,4,0" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.SetCombinateAddCommand}"/>
+                <local:ColorButton x:Name="buttonCombinateMinus" Width="47" Height="47" Style="{StaticResource ToolButtonStyle}" Command="{Binding Settings.SetCombinateSubCommand}"/>
+            </StackPanel>
+
+            <TextBlock x:Name="labelSelectedShape" Text="{Binding Paint.SelectedShapeLabel}" Foreground="White" Margin="3,8,3,4"/>
+
+            <local:ColorButton x:Name="buttonTexture" Content="Textur…" Width="150" Height="28" Margin="3,0,3,4" Style="{StaticResource ToolButtonStyle}" Click="ButtonTextureClick"/>
+            <local:ColorButton x:Name="buttonAi" Content="Ai" Width="150" Height="28" Margin="3,0,3,4" Style="{StaticResource ToolButtonStyle}" Click="ButtonAiClick"/>
+        </StackPanel>
+
+        <Border Background="#FFA0A0A0">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalContentAlignment="Left"
+                          VerticalContentAlignment="Top">
+                <Image x:Name="PaintImage"
+                       Stretch="None"
+                       Focusable="True"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       MouseDown="PictureBoxPaintMouseDown"
+                       MouseMove="PictureBoxPaintMouseMove"
+                       MouseUp="PictureBoxPaintMouseUp"
+                       MouseWheel="PictureBoxMouseWheel"
+                       MouseEnter="PictureBoxPaint_MouseEnter"/>
+            </ScrollViewer>
+        </Border>
+    </DockPanel>
+</Window>

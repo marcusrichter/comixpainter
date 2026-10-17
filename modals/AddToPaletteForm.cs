@@ -1,37 +1,19 @@
-﻿using comixpaint.controllers;
-using System;
-using System.Windows.Forms;
+using comixpaint.ViewModels;
+using System.Windows;
 
 namespace comixpaint.modals
 {
-    public partial class AddToPaletteForm : Form
+    public partial class AddToPaletteForm : Window
     {
-        public static AddToPaletteForm Instance { get; set; }
-
-        public bool IsBorder { get; set; }
-
-        public TextBox TextBoxName => textBoxName;
-
-        public Label LabelError => labelError;
-
-        public AddToPaletteForm()
+        public AddToPaletteForm(AddToPaletteViewModel viewModel)
         {
-            Instance = this;
             InitializeComponent();
-        }
-
-        private void AddToPaletteForm_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void buttonConfirm_Click(object sender, EventArgs e)
-        {
-            PaletteController.I().AddColorToPalletteManager();
-        }
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            AddToPaletteForm.Instance.Close();
+            DataContext = viewModel;
+            viewModel.RequestClose += result =>
+            {
+                DialogResult = result;
+                Close();
+            };
         }
     }
 }
